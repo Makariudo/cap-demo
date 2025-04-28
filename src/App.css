@@ -1,0 +1,219 @@
+.App {
+  font-family: sans-serif;
+  padding: 10px; /* Reduce padding on small screens */
+  width: 100%; /* Use full width */
+  box-sizing: border-box; /* Include padding in width calculation */
+  margin: 0 auto;
+}
+
+h1, h2 {
+  text-align: center;
+  color: #333;
+}
+
+.vma-input {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.vma-input label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.vma-input input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 80px;
+  background-color: #e0e0e0; /* Light gray background */
+  color: #111; /* Black text */
+}
+
+.table-container {
+  overflow-x: auto; /* Re-enable horizontal scrolling */
+  width: 100%; /* Ensure container takes full width */
+  -webkit-overflow-scrolling: touch; /* Improve scrolling experience on iOS */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 0.9em;
+}
+
+th, td {
+  border: 1px solid #eee; /* Lighter border */
+  padding: 6px 4px; /* Reduce padding slightly */
+  text-align: center;
+  white-space: nowrap; /* Prevent wrapping again */
+  /* word-break: break-word; */ /* Not needed with nowrap */
+}
+
+th {
+  background-color: #dcdcdc; /* Slightly lighter grey header background */
+  font-weight: bold;
+  color: #333; /* Darker text for header */
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f8f8f8; /* Light grey for even rows */
+}
+
+tbody tr:hover {
+  background-color: #f0f8ff; /* Lighter hover */
+}
+
+/* Style for the first column (Pace) */
+th:first-child, td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1; /* Ensure it stays above other cells */
+  font-weight: bold;
+  border-right: 1px solid #ccc; /* Add border back for visual separation */
+  /* background-color will be set below for specific states */
+}
+
+/* Header sticky cell */
+thead th:first-child {
+    background-color: #dcdcdc; /* Match header background */
+}
+
+/* Body sticky cells */
+tbody td:first-child {
+   background-color: #eaeaea; /* Slightly lighter base for sticky cells in odd rows */
+}
+tbody tr:nth-child(even) td:first-child {
+  background-color: #f8f8f8; /* Match even row background */
+}
+tbody tr:hover td:first-child {
+  background-color: #e6f4ff; /* Adjusted hover color for sticky cells */
+}
+
+
+/* Pace Configuration Styles */
+.pace-config {
+  margin: 10px auto 20px auto;
+  padding: 10px 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #fafafa;
+  max-width: 500px;
+}
+
+.pace-config h3 {
+  margin-top: 0;
+  margin-bottom: 8px; /* Further reduced margin */
+  text-align: center;
+  color: #444;
+}
+
+.config-row {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px; /* Slightly increase margin for wrapped items */
+}
+
+/* Adjust label width for smaller screens if needed */
+@media (max-width: 450px) {
+  .config-row label {
+    min-width: 100px; /* Reduce min-width */
+    margin-bottom: 5px; /* Add space below label when wrapped */
+  }
+  .config-row > div { /* Target the div wrapping selects */
+     width: 100%; /* Allow select group to take full width */
+     display: flex;
+     justify-content: flex-end; /* Align selects to the right */
+  }
+}
+
+.config-row label {
+  font-weight: bold;
+  margin-right: 10px;
+  min-width: 150px; /* Align labels */
+}
+
+.config-row select {
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 0 5px;
+}
+
+.config-row span {
+  margin: 0 5px;
+}
+
+/* Info Message Style */
+.info-message {
+  text-align: center;
+  margin-top: 20px;
+  color: #555;
+  font-style: italic;
+}
+
+/* VMA Pace Display Style */
+.vma-input span {
+  font-size: 0.9em;
+  color: #666;
+  margin-left: 10px;
+}
+
+.dark {
+  background-color: #121212;
+  color: #fff;
+}
+
+.dark h1,
+.dark h2,
+.dark label {
+  color: #fff;
+}
+
+.dark .pace-config {
+  background-color: #333;
+  border-color: #555;
+  color: #fff;
+}
+
+.dark .config-row label {
+  color: #ddd;
+}
+
+.dark .config-row select {
+  background-color: #444;
+  color: #fff;
+  border-color: #666;
+}
+
+.dark .vma-input input {
+  background-color: #666;
+  color: #fff;
+  border-color: #888;
+}
+
+.dark th {
+  background-color: #444;
+  color: #fff;
+}
+
+.dark tbody tr:nth-child(even) {
+  background-color: #555;
+}
+
+.dark tbody tr:hover {
+  background-color: #666;
+}
+
+.dark tbody td:first-child {
+    background-color: #666; /* Slightly lighter base for sticky cells in odd rows */
+}
+.dark tbody tr:nth-child(even) td:first-child {
+  background-color: #555; /* Match even row background */
+}
+.dark tbody tr:hover td:first-child {
+  background-color: #777; /* Adjusted hover color for sticky cells */
+}

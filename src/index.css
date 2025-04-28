@@ -1,0 +1,48 @@
+/* Reset default margin and padding */
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark; /* Keep default color scheme handling */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: #ffffff; /* Set background to pure white */
+  color: #213547; /* Default text color for light mode */
+  min-height: 100vh; /* Ensure body takes full viewport height */
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: flex-start; /* Align content to the top */
+  padding-top: 20px; /* Add some space at the top */
+}
+
+/* Keep dark mode styles if needed, but ensure light mode is default */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+/* Ensure App container takes precedence if needed, but body styles should handle centering */
+#root {
+  width: 100%; /* Allow root to expand */
+  display: flex;
+  justify-content: center;
+}
+
+/* Remove max-width from App if body handles centering */
+/* Or adjust App styles if necessary */

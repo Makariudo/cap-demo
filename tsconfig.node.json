@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "composite": true, // Required for project references
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["vite.config.ts"] // Update to reference the .ts file
+}
