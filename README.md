@@ -1,12 +1,46 @@
-# React + Vite
+# Allure Calculator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Application de calcul d'allures pour coureurs à pied développée avec React et TypeScript.
 
-Currently, two official plugins are available:
+## Description
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Allure Calculator est un outil conçu pour aider les coureurs à calculer et planifier leurs allures de course sur différentes distances. Que vous prépariez un 5K, un semi-marathon ou un marathon, cette application vous aide à gérer vos temps intermédiaires et à planifier votre rythme de course idéal.
 
-## Expanding the ESLint configuration
+## Fonctionnalités
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Calcul d'allures pour différentes distances de course (1000m à 100km)
+- Gestion des temps intermédiaires pour un meilleur suivi pendant la course
+- Plages d'allures ajustables de 2'00/km à 8'00/km
+- Incréments d'allure personnalisables (1", 2", 5", 10", 15", 20", 30")
+- Affichage des distances officielles, fractionnés et intermédiaires
+
+## Technologies utilisées
+
+- React
+- TypeScript
+- Vite
+
+## Installation
+
+```bash
+# Cloner le dépôt
+git clone https://github.com/Makariudo/cap-demo.git
+cd cap-demo
+
+# Installer les dépendances
+npm install
+
+# Lancer l'application en développement
+npm run dev
+```
+
+## Utilisation
+
+1. Sélectionnez votre distance de course cible
+2. Choisissez votre allure objectif
+3. Ajustez les paramètres selon vos besoins
+4. Obtenez vos temps intermédiaires et votre planning de course
+
+## Licence
+
+MIT

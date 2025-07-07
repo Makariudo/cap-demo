@@ -12,7 +12,7 @@ h1, h2 {
 }
 
 .vma-input {
-  margin-bottom: 25px;
+  margin-bottom: 15px;
   text-align: center;
 }
 
@@ -21,14 +21,6 @@ h1, h2 {
   font-weight: bold;
 }
 
-.vma-input input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 80px;
-  background-color: #e0e0e0; /* Light gray background */
-  color: #111; /* Black text */
-}
 
 .table-container {
   overflow-x: auto; /* Re-enable horizontal scrolling */
@@ -94,8 +86,8 @@ tbody tr:hover td:first-child {
 
 /* Pace Configuration Styles */
 .pace-config {
-  margin: 10px auto 20px auto;
-  padding: 10px 15px;
+  margin: 10px auto 15px auto;
+  padding: 8px 12px;
   border: 1px solid #eee;
   border-radius: 8px;
   background-color: #fafafa;
@@ -104,7 +96,7 @@ tbody tr:hover td:first-child {
 
 .pace-config h3 {
   margin-top: 0;
-  margin-bottom: 8px; /* Further reduced margin */
+  margin-bottom: 5px;
   text-align: center;
   color: #444;
 }
@@ -114,7 +106,7 @@ tbody tr:hover td:first-child {
   flex-wrap: wrap; /* Allow wrapping on small screens */
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px; /* Slightly increase margin for wrapped items */
+  margin-bottom: 6px;
 }
 
 /* Adjust label width for smaller screens if needed */
@@ -136,12 +128,6 @@ tbody tr:hover td:first-child {
   min-width: 150px; /* Align labels */
 }
 
-.config-row select {
-  padding: 5px 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin: 0 5px;
-}
 
 .config-row span {
   margin: 0 5px;
@@ -183,17 +169,6 @@ tbody tr:hover td:first-child {
   color: #ddd;
 }
 
-.dark .config-row select {
-  background-color: #444;
-  color: #fff;
-  border-color: #666;
-}
-
-.dark .vma-input input {
-  background-color: #666;
-  color: #fff;
-  border-color: #888;
-}
 
 .dark th {
   background-color: #444;
