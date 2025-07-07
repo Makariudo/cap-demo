@@ -313,7 +313,7 @@ function App(): JSX.Element {
       <StyledThemeProvider theme={theme}>
         <div className={`App ${isDarkMode ? 'dark' : ''}`}>
           <div className="flex justify-between items-center mb-4">
-            <h1>Calculateur d'Allure</h1>
+            <h1>Calculateur d'Allure 2</h1>
             <Button variant="outlined" onClick={toggleDarkMode}>
               {isDarkMode ? 'Light Mode' : 'Dark Mode'}
             </Button>
