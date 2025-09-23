@@ -22,6 +22,18 @@ h1, h2 {
 }
 
 
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 12px 0 16px;
+}
+
+.action-buttons .MuiButton-root {
+  min-width: 160px;
+}
+
 .table-container {
   overflow-x: auto; /* Re-enable horizontal scrolling */
   width: 100%; /* Ensure container takes full width */
@@ -35,6 +47,31 @@ table {
   font-size: 0.9em;
 }
 
+.table-container thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.table-container thead th:first-child {
+  z-index: 3;
+}
+
+.dark .table-container thead th:first-child {
+  background-color: #3a4257;
+}
+
+.table-container th.column-header {
+  cursor: pointer;
+}
+
+.selected-column {
+  background-color: rgba(255, 235, 130, 0.6);
+}
+
+.dark .selected-column {
+  background-color: rgba(255, 213, 79, 0.4);
+}
 th, td {
   border: 1px solid #eee; /* Lighter border */
   padding: 6px 4px; /* Reduce padding slightly */
@@ -186,24 +223,40 @@ tbody tr:hover td:first-child {
 
 
 .dark th {
-  background-color: #444;
-  color: #fff;
+  background-color: #3a4257;
+  color: #eef1ff;
+}
+
+.dark tbody tr {
+  background-color: #1b222f;
 }
 
 .dark tbody tr:nth-child(even) {
-  background-color: #555;
+  background-color: #222b3a;
 }
 
 .dark tbody tr:hover {
-  background-color: #666;
+  background-color: #2b3450;
 }
 
 .dark tbody td:first-child {
-    background-color: #666; /* Slightly lighter base for sticky cells in odd rows */
+  background-color: #252d40; /* Slightly lighter base for sticky cells in odd rows */
 }
 .dark tbody tr:nth-child(even) td:first-child {
-  background-color: #555; /* Match even row background */
+  background-color: #2a3245; /* Match even row background */
 }
 .dark tbody tr:hover td:first-child {
-  background-color: #777; /* Adjusted hover color for sticky cells */
+  background-color: #323c57; /* Adjusted hover color for sticky cells */
 }
+
+
+
+
+
+
+
+
+
+
+
+

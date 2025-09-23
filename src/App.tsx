@@ -75,6 +75,7 @@ function App(): JSX.Element {
     const parsed = parseInt(saved, 10);
     return INTERVAL_OPTIONS.includes(parsed) ? parsed : defaultInterval; // Default Interval: 15s
   });
+  const [selectedColumnIndex, setSelectedColumnIndex] = useState<number | null>(null);
   // VMA state - Initialize from localStorage or default to '15'
   const [vma, setVma] = useState<string>(() => {
     const savedVma = localStorage.getItem('userVma');
@@ -180,6 +181,9 @@ function App(): JSX.Element {
     if (INTERVAL_OPTIONS.includes(nextValue)) {
       setPaceIntervalSec(nextValue);
     }
+  };
+  const handleColumnSelect = (columnIndex: number) => {
+    setSelectedColumnIndex(prev => (prev === columnIndex ? null : columnIndex));
   };
   // Handler for VMA (unused for display logic now)
   const handleVmaChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -292,9 +296,6 @@ function App(): JSX.Element {
         <div className={`App ${isDarkMode ? 'dark' : ''}`}>
           <div className="flex justify-between items-center mb-4">
             <h1>Calculateur d'allure</h1>
-            <Button variant="outlined" onClick={toggleDarkMode}>
-              {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-            </Button>
           </div>
            {/* VMA Input - Kept but doesn't affect table */}
            <div className="vma-input">
@@ -311,12 +312,17 @@ function App(): JSX.Element {
             />
              {vma && parseFloat(vma) > 0 && <span> (Allure VMA: {formatTime(3600 / parseFloat(vma))}/km)</span>}
            </div>
-           <Button variant="outlined" onClick={toggleColorMode} sx={{ mr: 2 }}>
-             {isColorModeEnabled ? 'Disable Color Mode' : 'Enable Color Mode'}
-           </Button>
-           <Button variant="outlined" onClick={printTable}>
-             Print Table
-           </Button>
+          <div className="action-buttons">
+            <Button variant="outlined" onClick={toggleDarkMode}>
+              {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+            </Button>
+            <Button variant="outlined" onClick={toggleColorMode}>
+              {isColorModeEnabled ? 'Disable Color Mode' : 'Enable Color Mode'}
+            </Button>
+            <Button variant="outlined" onClick={printTable}>
+              Print Table
+            </Button>
+          </div>
           {/* Pace Configuration */}
          <div className="pace-config">
            <h3>Configurer l'affichage des allures</h3>
@@ -390,10 +396,25 @@ function App(): JSX.Element {
                <table>
                <thead>
                    <tr>
-                   <th>Allure (min/km)</th>
-                   {distances.map(dist => (
-                       <th key={dist.label}>{dist.label}</th>
-                   ))}
+                   <th
+                     className={`column-header ${selectedColumnIndex === 0 ? 'selected-column' : ''}`}
+                     onClick={() => handleColumnSelect(0)}
+                   >
+                     Allure (min/km)
+                   </th>
+                   {distances.map((dist, distIndex) => {
+                     const columnIndex = distIndex + 1;
+                     const isSelected = selectedColumnIndex === columnIndex;
+                     return (
+                       <th
+                         key={dist.label}
+                         className={`column-header ${isSelected ? 'selected-column' : ''}`}
+                         onClick={() => handleColumnSelect(columnIndex)}
+                       >
+                         {dist.label}
+                       </th>
+                     );
+                   })}
                    </tr>
                </thead>
                <tbody>
@@ -401,11 +422,17 @@ function App(): JSX.Element {
                      const currentVMA = parseFloat(vma) || 15;
                      return (
                        <tr key={pace.seconds}>
-                         <td>{pace.label}</td>
-                         {distances.map(dist => {
+                         <td className={selectedColumnIndex === 0 ? 'selected-column' : undefined}>{pace.label}</td>
+                         {distances.map((dist, distIndex) => {
+                           const columnIndex = distIndex + 1;
+                           const isSelected = selectedColumnIndex === columnIndex;
                            const paceColor = isColorModeEnabled ? getPaceColor(pace.seconds, dataDistance[dist.label as DistanceIntermediairesEnum], currentVMA) : '';
                            return (
-                             <td key={`${pace.seconds}-${dist.meters}`} style={{ backgroundColor: paceColor }}>
+                             <td
+                               key={`${pace.seconds}-${dist.meters}`}
+                               className={isSelected ? 'selected-column' : undefined}
+                               style={{ backgroundColor: paceColor }}
+                             >
                                {formatTime(calculateTime(dist.meters, pace.seconds))}
                              </td>
                            );
@@ -417,7 +444,7 @@ function App(): JSX.Element {
                </table>
            </div>
            ) : (
-               <p className="info-message">Configuration d'allure invalide. Vérifiez que l'allure min est plus lente que l'allure max et respecte les limites (2:00-9:00).</p>
+               <p className="info-message">Configuration d'allure invalide. Verifiez que l'allure min est plus lente que l'allure max et respecte les limites (2:00-9:00).</p>
            )}
        </div>
       </StyledThemeProvider>
@@ -425,5 +452,7 @@ function App(): JSX.Element {
   );
 }
 export default App;
+
+
 
 
