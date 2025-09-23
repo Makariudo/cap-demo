@@ -18,6 +18,21 @@ const INTERVAL_OPTIONS: number[] = [1, 5, 10, 15, 20, 25, 30];
 const CONTROL_PADDING_Y = '0.25rem';
 const CONTROL_PADDING_X = '0.5rem';
 const CONTROL_BORDER_RADIUS = '0.2rem';
+const REFERENCE_DISTANCE_OPTIONS: Array<{ value: DistanceIntermediairesEnum; label: string }> = [
+  { value: DistanceIntermediairesEnum['5000M'], label: '5 km' },
+  { value: DistanceIntermediairesEnum['10KM'], label: '10 km' },
+  { value: DistanceIntermediairesEnum['SEMI'], label: 'Semi-marathon' },
+];
+type TableViewMode = 'official' | 'fraction' | 'intermediate';
+
+const TABLE_VIEW_OPTIONS: Array<{ value: TableViewMode; label: string }> = [
+  { value: 'official', label: 'Distances officielles' },
+  { value: 'fraction', label: 'Fractionnees' },
+  { value: 'intermediate', label: 'Intermediaires' },
+];
+
+const FRACTION_DISTANCES_METERS: number[] = [100, 200, 300, 400, 500, 600, 800, 1000, 1200, 1500, 1600, 2000, 2500, 3000, 4000, 5000];
+
 // Helper function to format seconds into hh:mm:ss or mm:ss
 function formatTime(totalSeconds: number): string {
   if (isNaN(totalSeconds) || totalSeconds <= 0) {
@@ -76,6 +91,15 @@ function App(): JSX.Element {
     return INTERVAL_OPTIONS.includes(parsed) ? parsed : defaultInterval; // Default Interval: 15s
   });
   const [selectedColumnIndex, setSelectedColumnIndex] = useState<number | null>(null);
+  const [tableViewMode, setTableViewMode] = useState<TableViewMode>('official');
+  const [intermediateDistance, setIntermediateDistance] = useState<DistanceIntermediairesEnum>(DistanceIntermediairesEnum['10KM']);
+  const [referenceDistance, setReferenceDistance] = useState<DistanceIntermediairesEnum>(REFERENCE_DISTANCE_OPTIONS[0].value);
+  const [referenceHours, setReferenceHours] = useState<string>('0');
+  const [referenceMinutes, setReferenceMinutes] = useState<string>('25');
+  const [referenceSeconds, setReferenceSeconds] = useState<string>('0');
+  const [referenceError, setReferenceError] = useState<string>('');
+  const [computedVma, setComputedVma] = useState<number | null>(null);
+  const [showReferenceEstimator, setShowReferenceEstimator] = useState<boolean>(false);
   // VMA state - Initialize from localStorage or default to '15'
   const [vma, setVma] = useState<string>(() => {
     const savedVma = localStorage.getItem('userVma');
@@ -119,15 +143,62 @@ function App(): JSX.Element {
   }, [paceIntervalSec]);
   // Use distances from the imported model
   const distances: DistanceData[] = useMemo(() => {
-    // Extract label and meters from the imported dataDistance object
-    // Add type assertion for distInfo
+    if (tableViewMode === 'fraction') {
+      return FRACTION_DISTANCES_METERS.map(meters => ({
+        label: `${meters} m`,
+        meters,
+      }));
+    }
+
+    if (tableViewMode === 'intermediate') {
+      const referenceInfo = dataDistance[intermediateDistance];
+      if (!referenceInfo) {
+        return [];
+      }
+
+      const formatSplitLabel = (splitMeters: number) => {
+        if (splitMeters >= 1000) {
+          const kmValue = splitMeters / 1000;
+          const formatted = Number.isInteger(kmValue)
+            ? kmValue.toString()
+            : kmValue.toFixed(2).replace(/0+$/, '').replace(/\.$/, '');
+          return `${formatted} km`;
+        }
+        return `${splitMeters} m`;
+      };
+
+      const seen = new Set<number>();
+      return referenceInfo.tempsIntermediaires
+        .filter(split => {
+          if (seen.has(split)) {
+            return false;
+          }
+          seen.add(split);
+          return true;
+        })
+        .map(split => ({
+          label: formatSplitLabel(split),
+          meters: split,
+        }));
+    }
+
     return Object.values(dataDistance).map((distInfo: NameToDistance) => ({
-        label: distInfo.label, // Use the label provided in dataDistance
-        meters: distInfo.distance
+      label: distInfo.label,
+      meters: distInfo.distance,
     }));
-    // If you specifically need the order from the Enum, you could map over Object.keys(DistanceIntermediairesEnum)
-    // and look up in dataDistance, but Object.values(dataDistance) is simpler if order isn't critical.
-  }, []); // Empty dependency array means this runs once
+  }, [tableViewMode, intermediateDistance]);
+  const distanceLookup = useMemo(() => {
+    const lookup = new Map<string, NameToDistance>();
+    Object.values(dataDistance).forEach(info => {
+      lookup.set(info.label, info);
+    });
+    return lookup;
+  }, []);
+
+  const intermediateDistanceInfo = useMemo(() => {
+    return dataDistance[intermediateDistance];
+  }, [intermediateDistance]);
+
   // Generate paces based on state using useMemo
   const paces: PaceData[] = useMemo(() => {
     const generatedPaces: PaceData[] = [];
@@ -185,6 +256,96 @@ function App(): JSX.Element {
   const handleColumnSelect = (columnIndex: number) => {
     setSelectedColumnIndex(prev => (prev === columnIndex ? null : columnIndex));
   };
+
+  const parsePositiveInt = (value: string) => {
+    const parsed = parseInt(value, 10);
+    if (Number.isNaN(parsed)) {
+      return 0;
+    }
+    return Math.max(0, parsed);
+  };
+
+  const handleReferenceDistanceChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setReferenceDistance(e.target.value as DistanceIntermediairesEnum);
+  };
+
+  const handleReferenceHoursChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setReferenceHours(e.target.value);
+  };
+
+  const handleReferenceMinutesChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setReferenceMinutes(e.target.value);
+  };
+
+  const handleReferenceSecondsChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setReferenceSeconds(e.target.value);
+  };
+
+  const handleEstimateVmaFromReference = () => {
+    const hours = parsePositiveInt(referenceHours);
+    const minutes = parsePositiveInt(referenceMinutes);
+    const seconds = parsePositiveInt(referenceSeconds);
+
+    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+    if (totalSeconds <= 0) {
+      setReferenceError('Renseignez un temps de course valide.');
+      return;
+    }
+
+    const referenceInfo = dataDistance[referenceDistance];
+
+    if (!referenceInfo) {
+      setReferenceError('Distance de reference inconnue.');
+      return;
+    }
+
+    const averageSupportRatio = ((referenceInfo.minSoutien + referenceInfo.maxSoutien) / 2) / 100;
+
+    if (averageSupportRatio <= 0) {
+      setReferenceError('Impossible de calculer la VMA pour cette distance.');
+      return;
+    }
+
+    const raceSpeed = (referenceInfo.distance / 1000) / (totalSeconds / 3600);
+
+    if (!Number.isFinite(raceSpeed) || raceSpeed <= 0) {
+      setReferenceError('Vitesse de course invalide.');
+      return;
+    }
+
+    const estimatedVma = raceSpeed / averageSupportRatio;
+
+    if (!Number.isFinite(estimatedVma) || estimatedVma <= 0) {
+      setReferenceError('Resultat de VMA invalide.');
+      return;
+    }
+
+    setReferenceError('');
+    setComputedVma(estimatedVma);
+    setVma(estimatedVma.toFixed(2));
+    setSelectedColumnIndex(null);
+  };
+
+  const handleTableViewModeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const mode = e.target.value as TableViewMode;
+    setTableViewMode(mode);
+    setSelectedColumnIndex(null);
+  };
+
+  const handleIntermediateDistanceChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setIntermediateDistance(e.target.value as DistanceIntermediairesEnum);
+    setSelectedColumnIndex(null);
+  };
+
+  const toggleReferenceEstimator = () => {
+    setShowReferenceEstimator(prev => {
+      if (prev) {
+        setReferenceError('');
+      }
+      return !prev;
+    });
+  };
   // Handler for VMA (unused for display logic now)
   const handleVmaChange = (e: ChangeEvent<HTMLInputElement>) => {
     setVma(e.target.value);
@@ -193,8 +354,24 @@ function App(): JSX.Element {
     setIsDarkMode(!isDarkMode);
   };
   // Function to calculate the background color based on pace and VMA
-  const getPaceColor = (paceSeconds: number, distance: NameToDistance, currentVMA: number): string => {
+  const getPaceColor = (paceSeconds: number, distance: NameToDistance | undefined, currentVMA: number): string => {
+    if (!Number.isFinite(currentVMA) || currentVMA <= 0) {
+      return '';
+    }
+
     const vmaPaceSeconds = 3600 / currentVMA; // seconds per km at 100% VMA
+
+    if (!distance) {
+      const minFactor = 0.75; // ~125% VMA speed
+      const maxFactor = 1.6; // ~62% VMA speed
+      const ratio = paceSeconds / vmaPaceSeconds;
+      const normalized = Math.min(Math.max((ratio - minFactor) / (maxFactor - minFactor), 0), 1);
+      const inverted = 1 - normalized;
+      const red = Math.round(inverted * 255);
+      const green = 255 - red;
+      return `rgb(${red}, ${green}, 0)`;
+    }
+
     const minPacePercentage = distance.minSoutien / 100;
     const maxPacePercentage = distance.maxSoutien / 100;
     const minPaceSeconds = vmaPaceSeconds / maxPacePercentage;
@@ -312,6 +489,67 @@ function App(): JSX.Element {
             />
              {vma && parseFloat(vma) > 0 && <span> (Allure VMA: {formatTime(3600 / parseFloat(vma))}/km)</span>}
            </div>
+          <div className="reference-toggle">
+            <Button variant="text" size="small" onClick={toggleReferenceEstimator}>
+              {showReferenceEstimator ? "Masquer l'estimation VMA" : 'Je ne connais pas ma VMA'}
+            </Button>
+          </div>
+          {showReferenceEstimator && (
+            <div className="reference-estimator">
+              <h3>Estimer la VMA a partir d'un temps</h3>
+              <div className="reference-row">
+                <label htmlFor="reference-distance">Distance de reference</label>
+                <StyledSelect
+                  id="reference-distance"
+                  value={referenceDistance}
+                  onChange={handleReferenceDistanceChange}
+                >
+                  {REFERENCE_DISTANCE_OPTIONS.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </StyledSelect>
+              </div>
+              <div className="reference-row reference-time">
+                <span>Temps :</span>
+                <StyledTextField
+                  type="number"
+                  label="h"
+                  value={referenceHours}
+                  onChange={handleReferenceHoursChange}
+                  size="small"
+                  inputProps={{ min: 0 }}
+                />
+                <StyledTextField
+                  type="number"
+                  label="min"
+                  value={referenceMinutes}
+                  onChange={handleReferenceMinutesChange}
+                  size="small"
+                  inputProps={{ min: 0 }}
+                />
+                <StyledTextField
+                  type="number"
+                  label="sec"
+                  value={referenceSeconds}
+                  onChange={handleReferenceSecondsChange}
+                  size="small"
+                  inputProps={{ min: 0 }}
+                />
+              </div>
+              <div className="reference-actions">
+                <Button variant="outlined" onClick={handleEstimateVmaFromReference}>
+                  Calculer la VMA
+                </Button>
+              </div>
+              {referenceError && <p className="reference-error">{referenceError}</p>}
+              {computedVma !== null && !referenceError && (
+                <p className="reference-hint">VMA estimee : {computedVma.toFixed(2)} km/h (valeur appliquee ci-dessus).</p>
+              )}
+            </div>
+          )}
+
           <div className="action-buttons">
             <Button variant="outlined" onClick={toggleDarkMode}>
               {isDarkMode ? 'Light Mode' : 'Dark Mode'}
@@ -322,6 +560,39 @@ function App(): JSX.Element {
             <Button variant="outlined" onClick={printTable}>
               Print Table
             </Button>
+          </div>
+
+          <div className="table-controls">
+            <div className="control-group">
+              <label htmlFor="table-view-mode">Mode :</label>
+              <StyledSelect
+                id="table-view-mode"
+                value={tableViewMode}
+                onChange={handleTableViewModeChange}
+              >
+                {TABLE_VIEW_OPTIONS.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </StyledSelect>
+            </div>
+            {tableViewMode === 'intermediate' && (
+              <div className="control-group">
+                <label htmlFor="intermediate-distance">Distance :</label>
+                <StyledSelect
+                  id="intermediate-distance"
+                  value={intermediateDistance}
+                  onChange={handleIntermediateDistanceChange}
+                >
+                  {(Object.values(DistanceIntermediairesEnum) as DistanceIntermediairesEnum[]).map(distanceLabel => (
+                    <option key={distanceLabel} value={distanceLabel}>
+                      {distanceLabel}
+                    </option>
+                  ))}
+                </StyledSelect>
+              </div>
+            )}
           </div>
           {/* Pace Configuration */}
          <div className="pace-config">
@@ -426,7 +697,14 @@ function App(): JSX.Element {
                          {distances.map((dist, distIndex) => {
                            const columnIndex = distIndex + 1;
                            const isSelected = selectedColumnIndex === columnIndex;
-                           const paceColor = isColorModeEnabled ? getPaceColor(pace.seconds, dataDistance[dist.label as DistanceIntermediairesEnum], currentVMA) : '';
+                           const distanceInfoForColor = tableViewMode === 'official'
+                             ? distanceLookup.get(dist.label)
+                             : tableViewMode === 'intermediate'
+                               ? intermediateDistanceInfo
+                               : undefined;
+                           const paceColor = isColorModeEnabled && distanceInfoForColor
+                             ? getPaceColor(pace.seconds, distanceInfoForColor, currentVMA)
+                             : '';
                            return (
                              <td
                                key={`${pace.seconds}-${dist.meters}`}

@@ -21,6 +21,109 @@ h1, h2 {
   font-weight: bold;
 }
 
+.reference-toggle {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0;
+}
+
+.reference-toggle .MuiButton-root {
+  text-transform: none;
+}
+
+.reference-estimator {
+  margin: 16px auto;
+  padding: 12px 16px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #fdfdfd;
+  max-width: 520px;
+  text-align: center;
+}
+
+.reference-estimator h3 {
+  margin: 0 0 8px;
+  color: #333;
+}
+
+.reference-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.reference-row label,
+.reference-row span {
+  font-weight: 600;
+}
+
+.reference-time .MuiFormControl-root {
+  width: 90px;
+}
+
+.reference-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.reference-error {
+  color: #c62828;
+  margin-top: 6px;
+  font-size: 0.9em;
+}
+
+.table-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 12px;
+}
+
+.table-controls .control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.table-controls label {
+  font-weight: 600;
+}
+
+.dark .table-controls label {
+  color: #eef1ff;
+}
+
+.reference-hint {
+  margin-top: 6px;
+  font-size: 0.9em;
+  color: #2e7d32;
+}
+
+.dark .reference-estimator {
+  background-color: #1b222f;
+  border-color: #2a3245;
+  color: #eef1ff;
+}
+
+.dark .reference-estimator h3 {
+  color: #eef1ff;
+}
+
+.dark .reference-row label,
+.dark .reference-row span {
+  color: #eef1ff;
+}
+
+.dark .reference-hint {
+  color: #8bc34a;
+}
+
 
 .action-buttons {
   display: flex;
