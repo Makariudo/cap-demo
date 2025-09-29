@@ -630,14 +630,14 @@ function App(): JSX.Element {
                       value={minPaceMin}
                       onChange={handleMinPaceMinChange}
                     >
-                      {minuteOptions.map(min => <option key(`min-min-${min}`} value={min}>{min}</option>)}
+                      {minuteOptions.map(min => <option key={`min-min-${min}`} value={min}>{min}</option>)}
                     </StyledSelect>
                     <span>:</span>
                     <StyledSelect
                       value={minPaceSec}
                       onChange={handleMinPaceSecChange}
                     >
-                      {secondOptions.map(sec => <option key(`min-sec-${sec}`} value={sec}>{String(sec).padStart(2, '0')}</option>)}
+                      {secondOptions.map(sec => <option key={`min-sec-${sec}`} value={sec}>{String(sec).padStart(2, '0')}</option>)}
                     </StyledSelect>
                     <span> min/km (min 2:00)</span>
                   </div>
@@ -670,7 +670,7 @@ function App(): JSX.Element {
               </div>
             </div>
           </div>
-         <h2>Tableau des Temps par Allure</h2>
+          <h2>Tableau des Temps par Allure</h2>
          {paces.length > 0 ? (
            <div className="table-container">
                <table>
