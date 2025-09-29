@@ -474,193 +474,202 @@ function App(): JSX.Element {
           <div className="flex justify-between items-center mb-4">
             <h1>Calculateur d'allure</h1>
           </div>
-           {/* VMA Input - Kept but doesn't affect table */}
-           <div className="vma-input">
-            <label htmlFor="vma">Votre VMA (km/h): </label>
-            <TextField
-              type="number"
-              id="vma"
-              value={vma}
-              onChange={handleVmaChange}
-              placeholder="ex: 15"
-              label="Votre VMA (km/h)"
-              variant="outlined"
-              size="small"
-            />
-             {vma && parseFloat(vma) > 0 && <span> (Allure VMA: {formatTime(3600 / parseFloat(vma))}/km)</span>}
-           </div>
-          <div className="reference-toggle">
-            <Button variant="text" size="small" onClick={toggleReferenceEstimator}>
-              {showReferenceEstimator ? "Masquer l'estimation VMA" : 'Je ne connais pas ma VMA'}
-            </Button>
-          </div>
-          {showReferenceEstimator && (
-            <div className="reference-estimator">
-              <h3>Estimer la VMA a partir d'un temps</h3>
-              <div className="reference-row">
-                <label htmlFor="reference-distance">Distance de reference</label>
-                <StyledSelect
-                  id="reference-distance"
-                  value={referenceDistance}
-                  onChange={handleReferenceDistanceChange}
-                >
-                  {REFERENCE_DISTANCE_OPTIONS.map(option => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </StyledSelect>
+          <div className="top-controls-grid">
+            <div className="top-card">
+              {/* VMA Input - Kept but doesn't affect table */}
+              <div className="vma-input">
+                <label htmlFor="vma">Votre VMA (km/h): </label>
+                <TextField
+                  type="number"
+                  id="vma"
+                  value={vma}
+                  onChange={handleVmaChange}
+                  placeholder="ex: 15"
+                  label="Votre VMA (km/h)"
+                  variant="outlined"
+                  size="small"
+                />
+                {vma && parseFloat(vma) > 0 && <span> (Allure VMA: {formatTime(3600 / parseFloat(vma))}/km)</span>}
               </div>
-              <div className="reference-row reference-time">
-                <span>Temps :</span>
-                <StyledTextField
-                  type="number"
-                  label="h"
-                  value={referenceHours}
-                  onChange={handleReferenceHoursChange}
-                  size="small"
-                  inputProps={{ min: 0 }}
-                />
-                <StyledTextField
-                  type="number"
-                  label="min"
-                  value={referenceMinutes}
-                  onChange={handleReferenceMinutesChange}
-                  size="small"
-                  inputProps={{ min: 0 }}
-                />
-                <StyledTextField
-                  type="number"
-                  label="sec"
-                  value={referenceSeconds}
-                  onChange={handleReferenceSecondsChange}
-                  size="small"
-                  inputProps={{ min: 0 }}
-                />
-              </div>
-              <div className="reference-actions">
-                <Button variant="outlined" onClick={handleEstimateVmaFromReference}>
-                  Calculer la VMA
+              <div className="reference-toggle">
+                <Button variant="text" size="small" onClick={toggleReferenceEstimator}>
+                  {showReferenceEstimator ? "Masquer l'estimation VMA" : 'Je ne connais pas ma VMA'}
                 </Button>
               </div>
-              {referenceError && <p className="reference-error">{referenceError}</p>}
-              {computedVma !== null && !referenceError && (
-                <p className="reference-hint">VMA estimee : {computedVma.toFixed(2)} km/h (valeur appliquee ci-dessus).</p>
+              {showReferenceEstimator && (
+                <div className="reference-estimator">
+                  <h3>Estimer la VMA a partir d'un temps</h3>
+                  <div className="reference-row">
+                    <label htmlFor="reference-distance">Distance de reference</label>
+                    <StyledSelect
+                      id="reference-distance"
+                      value={referenceDistance}
+                      onChange={handleReferenceDistanceChange}
+                    >
+                      {REFERENCE_DISTANCE_OPTIONS.map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </StyledSelect>
+                  </div>
+                  <div className="reference-row reference-time">
+                    <span>Temps :</span>
+                    <StyledTextField
+                      type="number"
+                      label="h"
+                      value={referenceHours}
+                      onChange={handleReferenceHoursChange}
+                      size="small"
+                      inputProps={{ min: 0 }}
+                    />
+                    <StyledTextField
+                      type="number"
+                      label="min"
+                      value={referenceMinutes}
+                      onChange={handleReferenceMinutesChange}
+                      size="small"
+                      inputProps={{ min: 0 }}
+                    />
+                    <StyledTextField
+                      type="number"
+                      label="sec"
+                      value={referenceSeconds}
+                      onChange={handleReferenceSecondsChange}
+                      size="small"
+                      inputProps={{ min: 0 }}
+                    />
+                  </div>
+                  <div className="reference-actions">
+                    <Button variant="outlined" onClick={handleEstimateVmaFromReference}>
+                      Calculer la VMA
+                    </Button>
+                  </div>
+                  {referenceError && <p className="reference-error">{referenceError}</p>}
+                  {computedVma !== null && !referenceError && (
+                    <p className="reference-hint">VMA estimee : {computedVma.toFixed(2)} km/h (valeur appliquee ci-dessus).</p>
+                  )}
+                </div>
               )}
             </div>
-          )}
 
-          <div className="action-buttons">
-            <Button variant="outlined" onClick={toggleDarkMode}>
-              {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-            </Button>
-            <Button variant="outlined" onClick={toggleColorMode}>
-              {isColorModeEnabled ? 'Disable Color Mode' : 'Enable Color Mode'}
-            </Button>
-            <Button variant="outlined" onClick={printTable}>
-              Print Table
-            </Button>
-          </div>
+            <div className="top-card">
+              <div className="action-buttons">
+                <Button variant="outlined" onClick={toggleDarkMode}>
+                  {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+                </Button>
+                <Button variant="outlined" onClick={toggleColorMode}>
+                  {isColorModeEnabled ? 'Disable Color Mode' : 'Enable Color Mode'}
+                </Button>
+                <Button variant="outlined" onClick={printTable}>
+                  Print Table
+                </Button>
+              </div>
 
-          <div className="table-controls">
-            <div className="control-group">
-              <label htmlFor="table-view-mode">Mode :</label>
-              <StyledSelect
-                id="table-view-mode"
-                value={tableViewMode}
-                onChange={handleTableViewModeChange}
-              >
-                {TABLE_VIEW_OPTIONS.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </StyledSelect>
+              <div className="table-controls">
+                <div className="control-group">
+                  <label htmlFor="table-view-mode">Mode :</label>
+                  <StyledSelect
+                    id="table-view-mode"
+                    value={tableViewMode}
+                    onChange={handleTableViewModeChange}
+                  >
+                    {TABLE_VIEW_OPTIONS.map(option => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </StyledSelect>
+                </div>
+                {tableViewMode === 'intermediate' && (
+                  <div className="control-group">
+                    <label htmlFor="intermediate-distance">Distance :</label>
+                    <StyledSelect
+                      id="intermediate-distance"
+                      value={intermediateDistance}
+                      onChange={handleIntermediateDistanceChange}
+                    >
+                      {(Object.values(DistanceIntermediairesEnum) as DistanceIntermediairesEnum[]).map(distanceLabel => (
+                        <option key={distanceLabel} value={distanceLabel}>
+                          {distanceLabel}
+                        </option>
+                      ))}
+                    </StyledSelect>
+                  </div>
+                )}
+              </div>
             </div>
-            {tableViewMode === 'intermediate' && (
-              <div className="control-group">
-                <label htmlFor="intermediate-distance">Distance :</label>
-                <StyledSelect
-                  id="intermediate-distance"
-                  value={intermediateDistance}
-                  onChange={handleIntermediateDistanceChange}
-                >
-                  {(Object.values(DistanceIntermediairesEnum) as DistanceIntermediairesEnum[]).map(distanceLabel => (
-                    <option key={distanceLabel} value={distanceLabel}>
-                      {distanceLabel}
-                    </option>
-                  ))}
-                </StyledSelect>
+
+            <div className="top-card top-card--pace">
+              {/* Pace Configuration */}
+              <div className="pace-config">
+                <h3>Configurer l'affichage des allures</h3>
+                <div className="config-row">
+                  <label>Allure min :</label>
+                  <div> {/* Wrap selects for better control */}
+                    <StyledSelect
+                      value={maxPaceMin}
+                      onChange={handleMaxPaceMinChange}
+                    >
+                      {minuteOptions.map(min => <option key={`max-min-${min}`} value={min}>{min}</option>)}
+                    </StyledSelect>
+                    <span>:</span>
+                    <StyledSelect
+                      value={maxPaceSec}
+                      onChange={handleMaxPaceSecChange}
+                    >
+                      {secondOptions.map(sec => <option key={`max-sec-${sec}`} value={sec}>{String(sec).padStart(2, '0')}</option>)}
+                    </StyledSelect>
+                    <span> min/km (max 9:00)</span>
+                  </div>
+                </div>
+                <div className="config-row">
+                  <label>Allure max :</label>
+                  <div>
+                    <StyledSelect
+                      value={minPaceMin}
+                      onChange={handleMinPaceMinChange}
+                    >
+                      {minuteOptions.map(min => <option key(`min-min-${min}`} value={min}>{min}</option>)}
+                    </StyledSelect>
+                    <span>:</span>
+                    <StyledSelect
+                      value={minPaceSec}
+                      onChange={handleMinPaceSecChange}
+                    >
+                      {secondOptions.map(sec => <option key(`min-sec-${sec}`} value={sec}>{String(sec).padStart(2, '0')}</option>)}
+                    </StyledSelect>
+                    <span> min/km (min 2:00)</span>
+                  </div>
+                </div>
+                <div className="config-row">
+                  <label htmlFor="interval">Intervalle (secondes):</label>
+                  <div>
+                    <StyledTextField
+                      id="interval"
+                      select
+                      value={paceIntervalSec}
+                      onChange={handleIntervalChange}
+                      variant="outlined"
+                      size="small"
+                      InputProps={{
+                        notched: false,
+                      }}
+                      SelectProps={{
+                        native: true,
+                      }}
+                    >
+                      {intervalOptions.map(sec => (
+                        <option key={`interval-${sec}`} value={sec}>
+                          {sec}s
+                        </option>
+                      ))}
+                    </StyledTextField>
+                  </div>
+                </div>
               </div>
-            )}
+            </div>
           </div>
-          {/* Pace Configuration */}
-         <div className="pace-config">
-           <h3>Configurer l'affichage des allures</h3>
-           <div className="config-row">
-              <label>Allure min :</label>
-              <div> {/* Wrap selects for better control */}
-               <StyledSelect
-                 value={maxPaceMin}
-                 onChange={handleMaxPaceMinChange}
-               >
-                 {minuteOptions.map(min => <option key={`max-min-${min}`} value={min}>{min}</option>)}
-               </StyledSelect>
-               <span>:</span>
-               <StyledSelect
-                 value={maxPaceSec}
-                 onChange={handleMaxPaceSecChange}
-               >
-                 {secondOptions.map(sec => <option key={`max-sec-${sec}`} value={sec}>{String(sec).padStart(2, '0')}</option>)}
-               </StyledSelect>
-               <span> min/km (max 9:00)</span>
-              </div>
-           </div>
-            <div className="config-row">
-              <label>Allure max :</label>
-              <div>
-               <StyledSelect
-                 value={minPaceMin}
-                 onChange={handleMinPaceMinChange}
-               >
-                 {minuteOptions.map(min => <option key={`min-min-${min}`} value={min}>{min}</option>)}
-               </StyledSelect>
-               <span>:</span>
-               <StyledSelect
-                 value={minPaceSec}
-                 onChange={handleMinPaceSecChange}
-               >
-                 {secondOptions.map(sec => <option key={`min-sec-${sec}`} value={sec}>{String(sec).padStart(2, '0')}</option>)}
-               </StyledSelect>
-               <span> min/km (min 2:00)</span>
-              </div>
-           </div>
-            <div className="config-row">
-               <label htmlFor="interval">Intervalle (secondes):</label>
-               <div>
-                   <StyledTextField
-                     id="interval"
-                     select
-                     value={paceIntervalSec}
-                     onChange={handleIntervalChange}
-                     variant="outlined"
-                     size="small"
-                     InputProps={{
-                       notched: false,
-                     }}
-                     SelectProps={{
-                       native: true,
-                     }}
-                   >
-                     {intervalOptions.map(sec => (
-                       <option key={`interval-${sec}`} value={sec}>
-                         {sec}s
-                       </option>
-                     ))}
-                   </StyledTextField>
-               </div>
-           </div>
-               </div>
          <h2>Tableau des Temps par Allure</h2>
          {paces.length > 0 ? (
            <div className="table-container">

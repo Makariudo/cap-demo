@@ -6,6 +6,75 @@
   margin: 0 auto;
 }
 
+
+.top-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.top-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.top-card .vma-input,
+.top-card .reference-toggle,
+.top-card .reference-estimator,
+.top-card .action-buttons,
+.top-card .table-controls,
+.top-card .pace-config {
+  margin: 0;
+}
+
+.top-card .vma-input {
+  text-align: left;
+}
+
+.top-card .reference-toggle {
+  justify-content: flex-start;
+}
+
+.top-card .reference-estimator {
+  max-width: none;
+  width: 100%;
+}
+
+.top-card .action-buttons {
+  justify-content: flex-start;
+  margin: 0;
+  gap: 10px;
+}
+
+.top-card .table-controls {
+  justify-content: flex-start;
+  margin: 0;
+}
+
+.top-card .table-controls .control-group {
+  flex-wrap: wrap;
+}
+
+.top-card .pace-config {
+  margin: 0;
+  max-width: none;
+}
+
+@media (max-width: 640px) {
+  .top-controls-grid {
+    gap: 12px;
+  }
+
+  .top-card .reference-toggle,
+  .top-card .action-buttons,
+  .top-card .table-controls {
+    justify-content: center;
+  }
+}
+
 h1, h2 {
   text-align: center;
   color: #333;
