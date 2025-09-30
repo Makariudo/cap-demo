@@ -9,69 +9,122 @@
 
 .top-controls-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
-  align-items: start;
-  margin-bottom: 16px;
+  grid-template-columns: 2fr 2fr 1fr;
+  gap: 32px;
+  margin: 32px 0;
+  align-items: stretch;
 }
 
 .top-card {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
+  padding: 20px 24px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
 }
 
-.top-card .vma-input,
-.top-card .reference-toggle,
-.top-card .reference-estimator,
-.top-card .action-buttons,
-.top-card .table-controls,
-.top-card .pace-config {
+.top-card-title {
   margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
 }
 
-.top-card .vma-input {
-  text-align: left;
+.dark .top-card-title {
+  color: #eef1ff;
 }
 
-.top-card .reference-toggle {
+.top-card--mode .table-controls,
+.top-card--actions .action-buttons {
+  margin: 0;
   justify-content: flex-start;
 }
 
-.top-card .reference-estimator {
-  max-width: none;
-  width: 100%;
-}
-
-.top-card .action-buttons {
-  justify-content: flex-start;
-  margin: 0;
-  gap: 10px;
-}
-
-.top-card .table-controls {
-  justify-content: flex-start;
-  margin: 0;
-}
-
-.top-card .table-controls .control-group {
+.top-card--mode .table-controls .control-group {
   flex-wrap: wrap;
 }
 
-.top-card .pace-config {
+.top-card--mode .vma-input {
+  text-align: left;
+  margin-bottom: 0;
+}
+
+.top-card--mode .vma-input label {
+  margin-right: 12px;
+}
+
+.top-card--mode .reference-toggle {
+  justify-content: flex-start;
+  margin: 0;
+}
+
+.top-card--mode .reference-estimator {
   margin: 0;
   max-width: none;
+  width: 100%;
+  text-align: left;
+}
+
+.top-card--mode .reference-row {
+  justify-content: flex-start;
+}
+
+.top-card--mode .reference-actions {
+  justify-content: flex-start;
+}
+
+.top-card--actions .action-buttons {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.top-card--actions .MuiButton-root {
+  width: 100%;
+}
+
+.top-card--pace .pace-config {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  max-width: none;
+  box-shadow: none;
+}
+
+.dark .top-card {
+  background-color: #1f2734;
+  border-color: #2f3647;
+  box-shadow: none;
+}
+
+.dark .top-card--pace .pace-config {
+  background: transparent;
+  border: 0;
+}
+
+@media (max-width: 1100px) {
+  .top-controls-grid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
 }
 
 @media (max-width: 640px) {
   .top-controls-grid {
-    gap: 12px;
+    gap: 16px;
   }
 
-  .top-card .reference-toggle,
-  .top-card .action-buttons,
-  .top-card .table-controls {
+  .top-card--actions .action-buttons {
+    flex-direction: row;
+    align-items: center;
     justify-content: center;
+  }
+
+  .top-card--actions .MuiButton-root {
+    width: auto;
   }
 }
 

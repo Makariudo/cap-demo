@@ -475,7 +475,7 @@ function App(): JSX.Element {
             <h1>Calculateur d'allure</h1>
           </div>
           <div className="top-controls-grid">
-            <div className="top-card">
+            <div className="top-card top-card--mode">
               {/* VMA Input - Kept but doesn't affect table */}
               <div className="vma-input">
                 <label htmlFor="vma">Votre VMA (km/h): </label>
@@ -551,21 +551,6 @@ function App(): JSX.Element {
                   )}
                 </div>
               )}
-            </div>
-
-            <div className="top-card">
-              <div className="action-buttons">
-                <Button variant="outlined" onClick={toggleDarkMode}>
-                  {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-                </Button>
-                <Button variant="outlined" onClick={toggleColorMode}>
-                  {isColorModeEnabled ? 'Disable Color Mode' : 'Enable Color Mode'}
-                </Button>
-                <Button variant="outlined" onClick={printTable}>
-                  Print Table
-                </Button>
-              </div>
-
               <div className="table-controls">
                 <div className="control-group">
                   <label htmlFor="table-view-mode">Mode :</label>
@@ -669,8 +654,24 @@ function App(): JSX.Element {
                 </div>
               </div>
             </div>
+
+            <div className="top-card top-card--actions">
+              <h3 className="top-card-title">Actions rapides</h3>
+              <div className="action-buttons">
+                <Button variant="outlined" onClick={toggleDarkMode}>
+                  {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+                </Button>
+                <Button variant="outlined" onClick={toggleColorMode}>
+                  {isColorModeEnabled ? 'Disable Color Mode' : 'Enable Color Mode'}
+                </Button>
+                <Button variant="outlined" onClick={printTable}>
+                  Print Table
+                </Button>
+              </div>
+            </div>
           </div>
-          <h2>Tableau des Temps par Allure</h2>
+
+          <h2>Tableau des Temps par Allure – {TABLE_VIEW_OPTIONS.find(option => option.value === tableViewMode)?.label ?? ""}</h2>
          {paces.length > 0 ? (
            <div className="table-container">
                <table>
