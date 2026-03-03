@@ -1,0 +1,142 @@
+{
+  "config": {
+    "configFile": "C:\\work\\confs\\cap-demo\\playwright.config.ts",
+    "rootDir": "C:/work/confs/cap-demo/e2e",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/work/confs/cap-demo/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/work/confs/cap-demo/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 6,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "golden.spec.ts",
+      "file": "golden.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Calculateur d'allure - Golden Test for Paces and Colors",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 3384,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"rgb(\u001b[7m190, 65\u001b[27m, 0)\"\u001b[39m\nReceived: \u001b[31m\"rgb(\u001b[7m252, 3\u001b[27m, 0)\"\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"rgb(\u001b[7m190, 65\u001b[27m, 0)\"\u001b[39m\nReceived: \u001b[31m\"rgb(\u001b[7m252, 3\u001b[27m, 0)\"\u001b[39m\n    at C:\\work\\confs\\cap-demo\\e2e\\golden.spec.ts:85:22",
+                    "location": {
+                      "file": "C:\\work\\confs\\cap-demo\\e2e\\golden.spec.ts",
+                      "column": 22,
+                      "line": 85
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 83 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 84 |\u001b[39m   \u001b[36mconst\u001b[39m bg318_10km \u001b[33m=\u001b[39m colors318[\u001b[35m6\u001b[39m]\u001b[33m;\u001b[39m \u001b[90m// Index 6 is the 10km column\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 85 |\u001b[39m   expect(bg318_10km)\u001b[33m.\u001b[39mtoBe(\u001b[32m'rgb(190, 65, 0)'\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// Rouge vif\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 86 |\u001b[39m   \n \u001b[90m 87 |\u001b[39m   \u001b[90m// Compare the colors to ensure they are visually different and confirm the gradient\u001b[39m\n \u001b[90m 88 |\u001b[39m   expect(bg334_10km)\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoEqual(bg318_10km)\u001b[33m;\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\work\\confs\\cap-demo\\e2e\\golden.spec.ts",
+                        "column": 22,
+                        "line": 85
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"rgb(\u001b[7m190, 65\u001b[27m, 0)\"\u001b[39m\nReceived: \u001b[31m\"rgb(\u001b[7m252, 3\u001b[27m, 0)\"\u001b[39m\n\n  83 |   });\n  84 |   const bg318_10km = colors318[6]; // Index 6 is the 10km column\n> 85 |   expect(bg318_10km).toBe('rgb(190, 65, 0)'); // Rouge vif\n     |                      ^\n  86 |   \n  87 |   // Compare the colors to ensure they are visually different and confirm the gradient\n  88 |   expect(bg334_10km).not.toEqual(bg318_10km);\n    at C:\\work\\confs\\cap-demo\\e2e\\golden.spec.ts:85:22"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-03-03T23:29:03.812Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\work\\confs\\cap-demo\\test-results\\golden-Calculateur-d-allur-e4094-n-Test-for-Paces-and-Colors-chromium\\video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\work\\confs\\cap-demo\\test-results\\golden-Calculateur-d-allur-e4094-n-Test-for-Paces-and-Colors-chromium\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\work\\confs\\cap-demo\\e2e\\golden.spec.ts",
+                    "column": 22,
+                    "line": 85
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "368b625b608da03d5a27-3b8db4fec13a6b1ead6c",
+          "file": "golden.spec.ts",
+          "line": 3,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-03-03T23:29:02.290Z",
+    "duration": 5870.2339999999995,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}
