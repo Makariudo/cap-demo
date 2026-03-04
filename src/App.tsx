@@ -388,6 +388,42 @@ function App(): JSX.Element {
   const toggleColorMode = () => {
     setIsColorModeEnabled(!isColorModeEnabled);
   };
+
+  const handleSaveConfig = () => {
+    const configToSave = {
+      vma,
+      maxPaceMin,
+      maxPaceSec,
+      minPaceMin,
+      minPaceSec,
+      paceIntervalSec,
+    };
+    localStorage.setItem('allureCapSavedConfig', JSON.stringify(configToSave));
+    alert("Configuration de l'application sauvegardée !");
+  };
+
+  const handleRestoreConfig = () => {
+    const savedConfigStr = localStorage.getItem('allureCapSavedConfig');
+    if (!savedConfigStr) {
+      alert('Aucune configuration sauvegardée trouvée.');
+      return;
+    }
+    
+    try {
+      const config = JSON.parse(savedConfigStr);
+      if (config.vma !== undefined) setVma(config.vma);
+      if (config.maxPaceMin !== undefined) setMaxPaceMin(config.maxPaceMin);
+      if (config.maxPaceSec !== undefined) setMaxPaceSec(config.maxPaceSec);
+      if (config.minPaceMin !== undefined) setMinPaceMin(config.minPaceMin);
+      if (config.minPaceSec !== undefined) setMinPaceSec(config.minPaceSec);
+      if (config.paceIntervalSec !== undefined) setPaceIntervalSec(config.paceIntervalSec);
+      alert('Configuration restaurée avec succès.');
+    } catch (e) {
+      console.error('Failed to parse saved config', e);
+      alert('Erreur lors de la lecture de la configuration.');
+    }
+  };
+
   const printTable = () => {
     const style = document.createElement('style');
     style.innerHTML = `
@@ -663,6 +699,12 @@ function App(): JSX.Element {
                 </Button>
                 <Button variant="outlined" onClick={toggleColorMode}>
                   {isColorModeEnabled ? 'Disable Color Mode' : 'Enable Color Mode'}
+                </Button>
+                <Button variant="outlined" onClick={handleSaveConfig}>
+                  Sauvegarder
+                </Button>
+                <Button variant="outlined" onClick={handleRestoreConfig}>
+                  Restaurer
                 </Button>
                 <Button variant="outlined" onClick={printTable}>
                   Print Table

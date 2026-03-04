@@ -53,87 +53,88 @@
   },
   "suites": [
     {
-      "title": "golden.spec.ts",
-      "file": "golden.spec.ts",
+      "title": "storage.spec.ts",
+      "file": "storage.spec.ts",
       "column": 0,
       "line": 0,
-      "specs": [
+      "specs": [],
+      "suites": [
         {
-          "title": "Calculateur d'allure - Golden Test for Paces and Colors",
-          "ok": false,
-          "tags": [],
-          "tests": [
+          "title": "Sauvegarde et Restauration du localStorage",
+          "file": "storage.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
             {
-              "timeout": 30000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
+              "title": "devrait sauvegarder et restaurer la configuration",
+              "ok": false,
+              "tags": [],
+              "tests": [
                 {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "failed",
-                  "duration": 3384,
-                  "error": {
-                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"rgb(\u001b[7m190, 65\u001b[27m, 0)\"\u001b[39m\nReceived: \u001b[31m\"rgb(\u001b[7m252, 3\u001b[27m, 0)\"\u001b[39m",
-                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"rgb(\u001b[7m190, 65\u001b[27m, 0)\"\u001b[39m\nReceived: \u001b[31m\"rgb(\u001b[7m252, 3\u001b[27m, 0)\"\u001b[39m\n    at C:\\work\\confs\\cap-demo\\e2e\\golden.spec.ts:85:22",
-                    "location": {
-                      "file": "C:\\work\\confs\\cap-demo\\e2e\\golden.spec.ts",
-                      "column": 22,
-                      "line": 85
-                    },
-                    "snippet": "\u001b[0m \u001b[90m 83 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 84 |\u001b[39m   \u001b[36mconst\u001b[39m bg318_10km \u001b[33m=\u001b[39m colors318[\u001b[35m6\u001b[39m]\u001b[33m;\u001b[39m \u001b[90m// Index 6 is the 10km column\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 85 |\u001b[39m   expect(bg318_10km)\u001b[33m.\u001b[39mtoBe(\u001b[32m'rgb(190, 65, 0)'\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// Rouge vif\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 86 |\u001b[39m   \n \u001b[90m 87 |\u001b[39m   \u001b[90m// Compare the colors to ensure they are visually different and confirm the gradient\u001b[39m\n \u001b[90m 88 |\u001b[39m   expect(bg334_10km)\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoEqual(bg318_10km)\u001b[33m;\u001b[39m\u001b[0m"
-                  },
-                  "errors": [
-                    {
-                      "location": {
-                        "file": "C:\\work\\confs\\cap-demo\\e2e\\golden.spec.ts",
-                        "column": 22,
-                        "line": 85
-                      },
-                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"rgb(\u001b[7m190, 65\u001b[27m, 0)\"\u001b[39m\nReceived: \u001b[31m\"rgb(\u001b[7m252, 3\u001b[27m, 0)\"\u001b[39m\n\n  83 |   });\n  84 |   const bg318_10km = colors318[6]; // Index 6 is the 10km column\n> 85 |   expect(bg318_10km).toBe('rgb(190, 65, 0)'); // Rouge vif\n     |                      ^\n  86 |   \n  87 |   // Compare the colors to ensure they are visually different and confirm the gradient\n  88 |   expect(bg334_10km).not.toEqual(bg318_10km);\n    at C:\\work\\confs\\cap-demo\\e2e\\golden.spec.ts:85:22"
-                    }
-                  ],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-03-03T23:29:03.812Z",
+                  "timeout": 30000,
                   "annotations": [],
-                  "attachments": [
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
                     {
-                      "name": "video",
-                      "contentType": "video/webm",
-                      "path": "C:\\work\\confs\\cap-demo\\test-results\\golden-Calculateur-d-allur-e4094-n-Test-for-Paces-and-Colors-chromium\\video.webm"
-                    },
-                    {
-                      "name": "error-context",
-                      "contentType": "text/markdown",
-                      "path": "C:\\work\\confs\\cap-demo\\test-results\\golden-Calculateur-d-allur-e4094-n-Test-for-Paces-and-Colors-chromium\\error-context.md"
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30137,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "C:\\work\\confs\\cap-demo\\e2e\\storage.spec.ts",
+                            "column": 249,
+                            "line": 13
+                          },
+                          "message": "Error: locator.selectOption: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('div').filter({ hasText: /^Allure min :23456789:000102030405060708091011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859 min\\/km \\(max 9:00\\)$/ }).getByRole('combobox').first()\u001b[22m\n\n\n  11 |     \n  12 |     // Configurer Allure min (ex: 5:30)\n> 13 |     await page.locator('div').filter({ hasText: /^Allure min :23456789:000102030405060708091011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859 min\\/km \\(max 9:00\\)$/ }).getByRole('combobox').first().selectOption('5');\n     |                                                                                                                                                                                                                                                         ^\n  14 |     await page.locator('div').filter({ hasText: /^Allure min :23456789:000102030405060708091011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859 min\\/km \\(max 9:00\\)$/ }).getByRole('combobox').nth(1).selectOption('30');\n  15 |     \n  16 |     // Configurer Allure max (ex: 3:15)\n    at C:\\work\\confs\\cap-demo\\e2e\\storage.spec.ts:13:249"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-04T07:39:16.774Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\work\\confs\\cap-demo\\test-results\\storage-Sauvegarde-et-Rest-2abfb--restaurer-la-configuration-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\work\\confs\\cap-demo\\test-results\\storage-Sauvegarde-et-Rest-2abfb--restaurer-la-configuration-chromium\\error-context.md"
+                        }
+                      ]
                     }
                   ],
-                  "errorLocation": {
-                    "file": "C:\\work\\confs\\cap-demo\\e2e\\golden.spec.ts",
-                    "column": 22,
-                    "line": 85
-                  }
+                  "status": "unexpected"
                 }
               ],
-              "status": "unexpected"
+              "id": "b48019861cf9d71d9131-964def23bf69c688b0f5",
+              "file": "storage.spec.ts",
+              "line": 4,
+              "column": 3
             }
-          ],
-          "id": "368b625b608da03d5a27-3b8db4fec13a6b1ead6c",
-          "file": "golden.spec.ts",
-          "line": 3,
-          "column": 1
+          ]
         }
       ]
     }
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-03-03T23:29:02.290Z",
-    "duration": 5870.2339999999995,
+    "startTime": "2026-03-04T07:39:12.538Z",
+    "duration": 35737.562999999995,
     "expected": 0,
     "skipped": 0,
     "unexpected": 1,

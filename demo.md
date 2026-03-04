@@ -31,3 +31,7 @@ Ce test a pour but de valider ces fonctionnalités et éviter toutes régression
 
 Prompt4:
 rajoute bien l'assertion avec la bonne couleur dans notre config précédente la ligne 3'18 devrait être rouge vif tandis que la 3'34 devrait être vert clair concernant la distance 10km et il y a donc un dégradé de couleur des background des allures entre ces deux valeurs. Je veux donc les bonnes assertions sur ces couleurs.
+
+
+Prompt5: orchestration
+@ je voudrais maintenant que tu m'ajoute une nouvelle fonctionnalité à notre application. Je voudrais que tu m'ajoute un bouton qui permet de sauvegarder les données de l'application dans le local storage dans les actions rapides. Et que tu m'ajoute un bouton qui permet de restaurer les données de l'application depuis le local storage dans les actions rapides. Ce test a pour but de valider que notre application est bien fonctionnelle et éviter toutes régressions futures @mcp:context7: @mcp:playwright:
