@@ -1,8 +1,11 @@
 .App {
   font-family: sans-serif;
-  padding: 10px; /* Reduce padding on small screens */
-  width: 100%; /* Use full width */
-  box-sizing: border-box; /* Include padding in width calculation */
+  padding: 10px;
+  /* Reduce padding on small screens */
+  width: 100%;
+  /* Use full width */
+  box-sizing: border-box;
+  /* Include padding in width calculation */
   margin: 0 auto;
 }
 
@@ -128,7 +131,8 @@
   }
 }
 
-h1, h2 {
+h1,
+h2 {
   text-align: center;
   color: #333;
 }
@@ -260,9 +264,12 @@ h1, h2 {
 }
 
 .table-container {
-  overflow-x: auto; /* Re-enable horizontal scrolling */
-  width: 100%; /* Ensure container takes full width */
-  -webkit-overflow-scrolling: touch; /* Improve scrolling experience on iOS */
+  overflow-x: auto;
+  /* Re-enable horizontal scrolling */
+  width: 100%;
+  /* Ensure container takes full width */
+  -webkit-overflow-scrolling: touch;
+  /* Improve scrolling experience on iOS */
 }
 
 table {
@@ -294,55 +301,87 @@ table {
   background-color: rgba(255, 235, 130, 0.6);
 }
 
+.selected-row {
+  background-color: rgba(25, 118, 210, 0.1) !important;
+}
+
 .dark .selected-column {
   background-color: rgba(255, 213, 79, 0.4);
 }
-th, td {
-  border: 1px solid #eee; /* Lighter border */
-  padding: 6px 4px; /* Reduce padding slightly */
+
+.dark .selected-row {
+  background-color: rgba(144, 202, 249, 0.15) !important;
+}
+
+th,
+td {
+  border: 1px solid #eee;
+  /* Lighter border */
+  padding: 6px 4px;
+  /* Reduce padding slightly */
   text-align: center;
-  white-space: nowrap; /* Prevent wrapping again */
-  /* word-break: break-word; */ /* Not needed with nowrap */
+  white-space: nowrap;
+  /* Prevent wrapping again */
+  /* word-break: break-word; */
+  /* Not needed with nowrap */
 }
 
 th {
-  background-color: #dcdcdc; /* Slightly lighter grey header background */
+  background-color: #dcdcdc;
+  /* Slightly lighter grey header background */
   font-weight: bold;
-  color: #333; /* Darker text for header */
+  color: #333;
+  /* Darker text for header */
+}
+
+tbody tr {
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 tbody tr:nth-child(even) {
-  background-color: #f8f8f8; /* Light grey for even rows */
+  background-color: #f8f8f8;
+  /* Light grey for even rows */
 }
 
 tbody tr:hover {
-  background-color: #f0f8ff; /* Lighter hover */
+  background-color: #f0f8ff !important;
+  /* Lighter hover */
 }
 
 /* Style for the first column (Pace) */
-th:first-child, td:first-child {
+th:first-child,
+td:first-child {
   position: sticky;
   left: 0;
-  z-index: 1; /* Ensure it stays above other cells */
+  z-index: 1;
+  /* Ensure it stays above other cells */
   font-weight: bold;
-  border-right: 1px solid #ccc; /* Add border back for visual separation */
+  border-right: 1px solid #ccc;
+  /* Add border back for visual separation */
   /* background-color will be set below for specific states */
 }
 
 /* Header sticky cell */
 thead th:first-child {
-    background-color: #dcdcdc; /* Match header background */
+  background-color: #dcdcdc;
+  /* Match header background */
 }
 
 /* Body sticky cells */
 tbody td:first-child {
-   background-color: #eaeaea; /* Slightly lighter base for sticky cells in odd rows */
+  background-color: #eaeaea;
+  /* Slightly lighter base for sticky cells in odd rows */
 }
+
 tbody tr:nth-child(even) td:first-child {
-  background-color: #f8f8f8; /* Match even row background */
+  background-color: #f8f8f8;
+  /* Match even row background */
 }
+
 tbody tr:hover td:first-child {
-  background-color: #e6f4ff; /* Adjusted hover color for sticky cells */
+  background-color: #e6f4ff;
+  /* Adjusted hover color for sticky cells */
 }
 
 
@@ -365,14 +404,16 @@ tbody tr:hover td:first-child {
 
 .config-row {
   display: flex;
-  flex-wrap: wrap; /* Allow wrapping on small screens */
+  flex-wrap: wrap;
+  /* Allow wrapping on small screens */
   align-items: center;
   justify-content: flex-start;
   margin-bottom: 6px;
   gap: 8px;
 }
 
-.config-row > div { /* Target the div wrapping selects */
+.config-row>div {
+  /* Target the div wrapping selects */
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -386,22 +427,29 @@ tbody tr:hover td:first-child {
   .config-row {
     gap: 8px;
   }
+
   .config-row label {
     flex: 0 0 100%;
     min-width: 0;
-    margin-bottom: 5px; /* Add space below label when wrapped */
+    margin-bottom: 5px;
+    /* Add space below label when wrapped */
   }
-  .config-row > div { /* Target the div wrapping selects */
-     width: 100%; /* Allow select group to take full width */
-     justify-content: flex-end; /* Align selects to the right */
-     flex: 1 1 100%;
+
+  .config-row>div {
+    /* Target the div wrapping selects */
+    width: 100%;
+    /* Allow select group to take full width */
+    justify-content: flex-end;
+    /* Align selects to the right */
+    flex: 1 1 100%;
   }
 }
 
 .config-row label {
   font-weight: bold;
   margin-right: 10px;
-  flex: 0 0 150px; /* Align labels */
+  flex: 0 0 150px;
+  /* Align labels */
 }
 
 
@@ -465,23 +513,16 @@ tbody tr:hover td:first-child {
 }
 
 .dark tbody td:first-child {
-  background-color: #252d40; /* Slightly lighter base for sticky cells in odd rows */
+  background-color: #252d40;
+  /* Slightly lighter base for sticky cells in odd rows */
 }
+
 .dark tbody tr:nth-child(even) td:first-child {
-  background-color: #2a3245; /* Match even row background */
+  background-color: #2a3245;
+  /* Match even row background */
 }
+
 .dark tbody tr:hover td:first-child {
-  background-color: #323c57; /* Adjusted hover color for sticky cells */
+  background-color: #323c57;
+  /* Adjusted hover color for sticky cells */
 }
-
-
-
-
-
-
-
-
-
-
-
-

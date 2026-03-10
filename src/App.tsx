@@ -11,8 +11,8 @@ interface DistanceData {
   meters: number;
 }
 interface PaceData {
-    label: string;
-    seconds: number;
+  label: string;
+  seconds: number;
 }
 const INTERVAL_OPTIONS: number[] = [1, 5, 10, 15, 20, 25, 30];
 const CONTROL_PADDING_Y = '0.25rem';
@@ -42,12 +42,12 @@ function formatTime(totalSeconds: number): string {
   let minutes: number = Math.floor((totalSeconds % 3600) / 60);
   let seconds: number = Math.round(totalSeconds % 60);
   if (seconds === 60) {
-      minutes += 1;
-      seconds = 0;
+    minutes += 1;
+    seconds = 0;
   }
   if (minutes === 60) {
-      hours += 1;
-      minutes = 0;
+    hours += 1;
+    minutes = 0;
   }
   const paddedSeconds: string = String(seconds).padStart(2, '0');
   const paddedMinutes: string = String(minutes).padStart(2, '0');
@@ -91,6 +91,7 @@ function App(): JSX.Element {
     return INTERVAL_OPTIONS.includes(parsed) ? parsed : defaultInterval; // Default Interval: 15s
   });
   const [selectedColumnIndex, setSelectedColumnIndex] = useState<number | null>(null);
+  const [selectedRowIndex, setSelectedRowIndex] = useState<number | null>(null);
   const [tableViewMode, setTableViewMode] = useState<TableViewMode>('official');
   const [intermediateDistance, setIntermediateDistance] = useState<DistanceIntermediairesEnum>(DistanceIntermediairesEnum['10KM']);
   const [referenceDistance, setReferenceDistance] = useState<DistanceIntermediairesEnum>(REFERENCE_DISTANCE_OPTIONS[0].value);
@@ -222,18 +223,18 @@ function App(): JSX.Element {
         seconds: currentSeconds
       });
     }
-     // Ensure the exact minimum pace (endSeconds) is included if within absolute limits and not caught by loop steps
-     if (endSeconds >= absoluteMinSeconds && !generatedPaces.some(p => p.seconds === endSeconds)) {
-        const minMin = Math.floor(endSeconds / 60);
-        const minSec = endSeconds % 60;
-         generatedPaces.push({ label: `${minMin}:${String(minSec).padStart(2, '0')}`, seconds: endSeconds });
-     }
-     // Ensure the exact maximum pace (startSeconds) is included if within absolute limits and not caught by loop steps, and different from min
-      if (startSeconds <= absoluteMaxSeconds && startSeconds !== endSeconds && !generatedPaces.some(p => p.seconds === startSeconds)) {
-        const maxMin = Math.floor(startSeconds / 60);
-        const maxSec = startSeconds % 60;
-         generatedPaces.push({ label: `${maxMin}:${String(maxSec).padStart(2, '0')}`, seconds: startSeconds });
-     }
+    // Ensure the exact minimum pace (endSeconds) is included if within absolute limits and not caught by loop steps
+    if (endSeconds >= absoluteMinSeconds && !generatedPaces.some(p => p.seconds === endSeconds)) {
+      const minMin = Math.floor(endSeconds / 60);
+      const minSec = endSeconds % 60;
+      generatedPaces.push({ label: `${minMin}:${String(minSec).padStart(2, '0')}`, seconds: endSeconds });
+    }
+    // Ensure the exact maximum pace (startSeconds) is included if within absolute limits and not caught by loop steps, and different from min
+    if (startSeconds <= absoluteMaxSeconds && startSeconds !== endSeconds && !generatedPaces.some(p => p.seconds === startSeconds)) {
+      const maxMin = Math.floor(startSeconds / 60);
+      const maxSec = startSeconds % 60;
+      generatedPaces.push({ label: `${maxMin}:${String(maxSec).padStart(2, '0')}`, seconds: startSeconds });
+    }
     // Sort paces descending by seconds (slowest first)
     generatedPaces.sort((a, b) => b.seconds - a.seconds);
     return generatedPaces;
@@ -255,6 +256,9 @@ function App(): JSX.Element {
   };
   const handleColumnSelect = (columnIndex: number) => {
     setSelectedColumnIndex(prev => (prev === columnIndex ? null : columnIndex));
+  };
+  const handleRowSelect = (rowIndex: number) => {
+    setSelectedRowIndex(prev => (prev === rowIndex ? null : rowIndex));
   };
 
   const parsePositiveInt = (value: string) => {
@@ -325,17 +329,20 @@ function App(): JSX.Element {
     setComputedVma(estimatedVma);
     setVma(estimatedVma.toFixed(2));
     setSelectedColumnIndex(null);
+    setSelectedRowIndex(null);
   };
 
   const handleTableViewModeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const mode = e.target.value as TableViewMode;
     setTableViewMode(mode);
     setSelectedColumnIndex(null);
+    setSelectedRowIndex(null);
   };
 
   const handleIntermediateDistanceChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setIntermediateDistance(e.target.value as DistanceIntermediairesEnum);
     setSelectedColumnIndex(null);
+    setSelectedRowIndex(null);
   };
 
   const toggleReferenceEstimator = () => {
@@ -389,25 +396,55 @@ function App(): JSX.Element {
     setIsColorModeEnabled(!isColorModeEnabled);
   };
   const printTable = () => {
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @media print {
-        body * {
-          visibility: hidden;
-        }
-        .table-container, .table-container * {
-          visibility: visible;
-        }
-        .table-container {
-          position: absolute;
-          left: 0;
-          top: 0;
-        }
-      }
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+
+    const currentPaces = selectedRowIndex !== null ? [paces[selectedRowIndex]] : paces;
+    const title = `Temps de passage - ${TABLE_VIEW_OPTIONS.find(o => o.value === tableViewMode)?.label}`;
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>${title}</title>
+          <style>
+            body { font-family: sans-serif; padding: 20px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ddd; padding: 12px 8px; text-align: center; }
+            th { background-color: #f4f4f4; font-weight: bold; }
+            h2 { text-align: center; }
+          </style>
+        </head>
+        <body>
+          <h2>${title}</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Allure (min/km)</th>
+                ${distances.map(d => `<th>${d.label}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${currentPaces.map(pace => `
+                <tr>
+                  <td><strong>${pace.label}</strong></td>
+                  ${distances.map(dist => `<td>${formatTime(calculateTime(dist.meters, pace.seconds))}</td>`).join('')}
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+          <script>
+            window.onload = () => {
+              window.print();
+              // window.close(); // Optionnel : fermer l'onglet après impression
+            };
+          </script>
+        </body>
+      </html>
     `;
-    document.head.appendChild(style);
-    window.print();
-    document.head.removeChild(style);
+
+    printWindow.document.write(html);
+    printWindow.document.close();
   };
   const theme = createTheme({
     palette: {
@@ -438,7 +475,7 @@ function App(): JSX.Element {
       box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
     }
   `;
-  const StyledTextField = styled(TextField)<{ theme: any }>`
+  const StyledTextField = styled(TextField) <{ theme: any }>`
     .MuiOutlinedInput-root {
       background-color: ${props => props.theme.palette.mode === 'dark' ? '#666' : '#f8f9fa'};
       color: ${props => props.theme.palette.mode === 'dark' ? '#fff' : 'inherit'};
@@ -478,7 +515,6 @@ function App(): JSX.Element {
             <div className="top-card top-card--mode">
               {/* VMA Input - Kept but doesn't affect table */}
               <div className="vma-input">
-                <label htmlFor="vma">Votre VMA (km/h): </label>
                 <TextField
                   type="number"
                   id="vma"
@@ -672,69 +708,74 @@ function App(): JSX.Element {
           </div>
 
           <h2>Tableau des Temps par Allure – {TABLE_VIEW_OPTIONS.find(option => option.value === tableViewMode)?.label ?? ""}</h2>
-         {paces.length > 0 ? (
-           <div className="table-container">
-               <table>
-               <thead>
-                   <tr>
-                   <th
-                     className={`column-header ${selectedColumnIndex === 0 ? 'selected-column' : ''}`}
-                     onClick={() => handleColumnSelect(0)}
-                   >
-                     Allure (min/km)
-                   </th>
-                   {distances.map((dist, distIndex) => {
-                     const columnIndex = distIndex + 1;
-                     const isSelected = selectedColumnIndex === columnIndex;
-                     return (
-                       <th
-                         key={dist.label}
-                         className={`column-header ${isSelected ? 'selected-column' : ''}`}
-                         onClick={() => handleColumnSelect(columnIndex)}
-                       >
-                         {dist.label}
-                       </th>
-                     );
-                   })}
-                   </tr>
-               </thead>
-               <tbody>
-                   {paces.map(pace => {
-                     const currentVMA = parseFloat(vma) || 15;
-                     return (
-                       <tr key={pace.seconds}>
-                         <td className={selectedColumnIndex === 0 ? 'selected-column' : undefined}>{pace.label}</td>
-                         {distances.map((dist, distIndex) => {
-                           const columnIndex = distIndex + 1;
-                           const isSelected = selectedColumnIndex === columnIndex;
-                           const distanceInfoForColor = tableViewMode === 'official'
-                             ? distanceLookup.get(dist.label)
-                             : tableViewMode === 'intermediate'
-                               ? intermediateDistanceInfo
-                               : undefined;
-                           const paceColor = isColorModeEnabled && distanceInfoForColor
-                             ? getPaceColor(pace.seconds, distanceInfoForColor, currentVMA)
-                             : '';
-                           return (
-                             <td
-                               key={`${pace.seconds}-${dist.meters}`}
-                               className={isSelected ? 'selected-column' : undefined}
-                               style={{ backgroundColor: paceColor }}
-                             >
-                               {formatTime(calculateTime(dist.meters, pace.seconds))}
-                             </td>
-                           );
-                         })}
-                       </tr>
-                     );
-                   })}
-               </tbody>
-               </table>
-           </div>
-           ) : (
-               <p className="info-message">Configuration d'allure invalide. Verifiez que l'allure min est plus lente que l'allure max et respecte les limites (2:00-9:00).</p>
-           )}
-       </div>
+          {paces.length > 0 ? (
+            <div className="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th
+                      className={`column-header ${selectedColumnIndex === 0 ? 'selected-column' : ''}`}
+                      onClick={() => handleColumnSelect(0)}
+                    >
+                      Allure (min/km)
+                    </th>
+                    {distances.map((dist, distIndex) => {
+                      const columnIndex = distIndex + 1;
+                      const isSelected = selectedColumnIndex === columnIndex;
+                      return (
+                        <th
+                          key={dist.label}
+                          className={`column-header ${isSelected ? 'selected-column' : ''}`}
+                          onClick={() => handleColumnSelect(columnIndex)}
+                        >
+                          {dist.label}
+                        </th>
+                      );
+                    })}
+                  </tr>
+                </thead>
+                <tbody>
+                  {paces.map((pace, rowIndex) => {
+                    const currentVMA = parseFloat(vma) || 15;
+                    const isRowSelected = selectedRowIndex === rowIndex;
+                    return (
+                      <tr
+                        key={pace.seconds}
+                        className={isRowSelected ? 'selected-row' : undefined}
+                        onClick={() => handleRowSelect(rowIndex)}
+                      >
+                        <td className={selectedColumnIndex === 0 ? 'selected-column' : undefined}>{pace.label}</td>
+                        {distances.map((dist, distIndex) => {
+                          const columnIndex = distIndex + 1;
+                          const isSelected = selectedColumnIndex === columnIndex;
+                          const distanceInfoForColor = tableViewMode === 'official'
+                            ? distanceLookup.get(dist.label)
+                            : tableViewMode === 'intermediate'
+                              ? intermediateDistanceInfo
+                              : undefined;
+                          const paceColor = isColorModeEnabled && distanceInfoForColor
+                            ? getPaceColor(pace.seconds, distanceInfoForColor, currentVMA)
+                            : '';
+                          return (
+                            <td
+                              key={`${pace.seconds}-${dist.meters}`}
+                              className={isSelected ? 'selected-column' : undefined}
+                              style={{ backgroundColor: paceColor }}
+                            >
+                              {formatTime(calculateTime(dist.meters, pace.seconds))}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="info-message">Configuration d'allure invalide. Verifiez que l'allure min est plus lente que l'allure max et respecte les limites (2:00-9:00).</p>
+          )}
+        </div>
       </StyledThemeProvider>
     </ThemeProvider>
   );
