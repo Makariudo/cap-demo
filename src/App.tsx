@@ -15,9 +15,9 @@ interface PaceData {
   seconds: number;
 }
 const INTERVAL_OPTIONS: number[] = [1, 5, 10, 15, 20, 25, 30];
-const CONTROL_PADDING_Y = '0.25rem';
-const CONTROL_PADDING_X = '0.5rem';
-const CONTROL_BORDER_RADIUS = '0.2rem';
+const CONTROL_PADDING_Y = '0.35rem';
+const CONTROL_PADDING_X = '0.75rem';
+const CONTROL_BORDER_RADIUS = '8px';
 const REFERENCE_DISTANCE_OPTIONS: Array<{ value: DistanceIntermediairesEnum; label: string }> = [
   { value: DistanceIntermediairesEnum['5000M'], label: '5 km' },
   { value: DistanceIntermediairesEnum['10KM'], label: '10 km' },
@@ -450,43 +450,51 @@ function App(): JSX.Element {
     palette: {
       mode: isDarkMode ? 'dark' : 'light',
       primary: {
-        main: '#1976d2',
+        main: '#3b82f6', // Modern Blue
       },
       secondary: {
-        main: '#dc004e',
+        main: '#10b981', // Modern Emerald
       },
+      background: {
+        default: isDarkMode ? '#0f172a' : '#f8fafc',
+        paper: isDarkMode ? '#1e293b' : '#ffffff',
+      }
     },
     typography: {
-      fontFamily: 'Roboto, Arial, sans-serif',
+      fontFamily: 'Inter, system-ui, sans-serif',
     },
+    shape: {
+      borderRadius: 8,
+    }
   });
   const StyledSelect = styled.select<{ theme: any }>`
-    background-color: ${props => props.theme.palette.mode === 'dark' ? '#444' : '#f8f9fa'};
-    color: ${props => props.theme.palette.mode === 'dark' ? '#fff' : '#495057'};
-    border: 1px solid ${props => props.theme.palette.mode === 'dark' ? '#666' : '#ced4da'};
+    background-color: ${props => props.theme.palette.mode === 'dark' ? '#334155' : '#ffffff'};
+    color: ${props => props.theme.palette.mode === 'dark' ? '#f1f5f9' : '#1e293b'};
+    border: 1px solid ${props => props.theme.palette.mode === 'dark' ? '#475569' : '#cbd5e1'};
     border-radius: ${CONTROL_BORDER_RADIUS};
     padding: ${CONTROL_PADDING_Y} ${CONTROL_PADDING_X};
     font-size: 0.9rem;
     line-height: 1.4;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: all .2s ease-in-out;
     &:focus {
-      border-color: #80bdff;
+      border-color: #3b82f6;
       outline: 0;
-      box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
     }
   `;
   const StyledTextField = styled(TextField) <{ theme: any }>`
     .MuiOutlinedInput-root {
-      background-color: ${props => props.theme.palette.mode === 'dark' ? '#666' : '#f8f9fa'};
-      color: ${props => props.theme.palette.mode === 'dark' ? '#fff' : 'inherit'};
+      background-color: ${props => props.theme.palette.mode === 'dark' ? '#334155' : '#ffffff'};
+      color: ${props => props.theme.palette.mode === 'dark' ? '#f1f5f9' : 'inherit'};
       font-size: 0.9rem;
       border-radius: ${CONTROL_BORDER_RADIUS};
+      transition: all .2s ease-in-out;
       .MuiOutlinedInput-input,
       .MuiSelect-select {
         padding: ${CONTROL_PADDING_Y} ${CONTROL_PADDING_X};
       }
       .MuiOutlinedInput-notchedOutline {
-        border-color: ${props => props.theme.palette.mode === 'dark' ? '#888' : '#ced4da'};
+        border-color: ${props => props.theme.palette.mode === 'dark' ? '#475569' : '#cbd5e1'};
         border-radius: ${CONTROL_BORDER_RADIUS};
       }
       .MuiOutlinedInput-notchedOutline legend {
@@ -525,7 +533,11 @@ function App(): JSX.Element {
                   variant="outlined"
                   size="small"
                 />
-                {vma && parseFloat(vma) > 0 && <span> (Allure VMA: {formatTime(3600 / parseFloat(vma))}/km)</span>}
+                {vma && parseFloat(vma) > 0 && (
+                  <div className="vma-pace-hint">
+                    Allure VMA : <strong>{formatTime(3600 / parseFloat(vma))}/km</strong>
+                  </div>
+                )}
               </div>
               <div className="reference-toggle">
                 <Button variant="text" size="small" onClick={toggleReferenceEstimator}>
@@ -641,7 +653,9 @@ function App(): JSX.Element {
                     >
                       {secondOptions.map(sec => <option key={`max-sec-${sec}`} value={sec}>{String(sec).padStart(2, '0')}</option>)}
                     </StyledSelect>
-                    <span> min/km (max 9:00)</span>
+                    <span>
+                      min/km <span className="mobile-hide">(max 9:00)</span>
+                    </span>
                   </div>
                 </div>
                 <div className="config-row">
@@ -660,7 +674,9 @@ function App(): JSX.Element {
                     >
                       {secondOptions.map(sec => <option key={`min-sec-${sec}`} value={sec}>{String(sec).padStart(2, '0')}</option>)}
                     </StyledSelect>
-                    <span> min/km (min 2:00)</span>
+                    <span>
+                      min/km <span className="mobile-hide">(min 2:00)</span>
+                    </span>
                   </div>
                 </div>
                 <div className="config-row">
@@ -707,7 +723,12 @@ function App(): JSX.Element {
             </div>
           </div>
 
-          <h2>Tableau des Temps par Allure – {TABLE_VIEW_OPTIONS.find(option => option.value === tableViewMode)?.label ?? ""}</h2>
+          <h2 className="table-title">
+            Tableau des Temps par Allure
+            <span className="mode-badge">
+              {TABLE_VIEW_OPTIONS.find(option => option.value === tableViewMode)?.label ?? ""}
+            </span>
+          </h2>
           {paces.length > 0 ? (
             <div className="table-container">
               <table>
